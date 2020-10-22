@@ -1,0 +1,98 @@
+##TicTacToe game to play and a simulation to see if starting from the center position gains any advantage
+
+import numpy as np
+import random
+random.seed(1)
+
+def cb():
+    return np.zeros((3,3), dtype=int)
+    ##Board is created
+
+B = cb()
+    ##Board is stored
+
+def pos(B):
+    return list(zip(*np.where(B==0)))
+    ##Returns all the possible positions
+
+def place(B, player, position):       
+    ##player can be either int 1 or 2  
+    ##Position is a tupke of length 2  
+    if B[position]==0:
+        B[position]=player
+        return B
+    else:
+        print("Position is already taken")
+    ##Position marked by the player
+
+def rp(B, player):
+    sels=pos(B)
+    if len(sels)>0:
+        sel=random.choice(sels)
+        place(B, player, sel)
+    return B
+    ##self positioning based on random
+
+def r_win(B, player):
+    if np.any(np.all(B==player, axis=1)):
+        return True
+    else:
+        return False
+    ##Checks if said player has won through row
+
+def c_win(B, player):
+    if np.any(np.all(B==player, axis=0)):
+        return True
+    else:
+        return False
+     ##Checks if said player has won through column
+
+def d_win(B, player):
+    if np.all(np.diag(B==player))or np.all(np.diag(np.fliplr(B))==player):
+        return True
+    else:
+        return False
+     ##Checks if said player has won through diagonal
+
+def Eval(B):
+    winner=0
+    for player in [1 , 2]:
+        if r_win(B, player) or c_win(B, player) or d_win(B, player):
+            winner=player
+    if np.all(B!=0)and winner==0:
+        winner=-1
+    return winner
+    ##returns the winner as the player 1 or 2, and -1 if tie
+
+def play_game():
+    winner, B = 0,cb()
+    while winner==0:
+        for player in [1 , 2]:
+            rp(B, player)
+            winner=Eval(B)
+            if winner != 0:
+                break
+    return winner
+    ##creates a board, calls alternates between two players (beginning with Player 1), and evaluates the board for a winner after every placement.
+
+def play_Sgame():
+    winner, B = 0,cb()
+    B[1,1] = 1  ##[1,1]= center position
+    while winner==0:
+        for player in [2 , 1]:
+            rp(B, player)
+            winner=Eval(B)
+            if winner != 0:
+                break
+    return winner
+    ##creates and plays a game where player 1 always goes first starting with the centre position 
+
+def check_Sgame():
+    r=[]
+    for a in range(1000):
+        r.append(play_Sgame())
+    print(r.count(1))
+    ##returns how many times out of 1000 does player 1 win if he always start first from the center position
+
+##RESULT:
+##Yes, starting from center position gives a lot of advantage as you can see that player 1 wins way more times than player 2 in Sgame.
