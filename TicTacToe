@@ -1,4 +1,4 @@
-##TicTacToe game to play and a simulation to see if starting from the center position gains any advantage
+##TicTacToe game to play and a simulation to see if starting from the center position gives any advantage
 
 import numpy as np
 import random
@@ -95,4 +95,4 @@ def check_Sgame():
     ##returns how many times out of 1000 does player 1 win if he always start first from the center position
 
 ##RESULT:
-##Yes, starting from center position gives a lot of advantage as you can see that player 1 wins way more times than player 2 in Sgame.
+##Yes, starting from center position gives an advantage as you can see that player 1 wins more times than player 2 in Sgame.
